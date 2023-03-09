@@ -327,6 +327,7 @@ class TimelapsedImageSeries:
         for i, im in enumerate(self.data['FULL_MASK']):
             self.data['FULL_MASK'][i].data=np.ones_like(self.data['FULL_MASK'][i].data)
             self.data['FULL_MASK'][i].binary=True
+            self.data['FULL_MASK'][i].path='Empty Mask Placeholder'
         self.timepoints['FULL_MASK'] = self.timepoints[next(iter(self.data))]
 
         if sortby is None:
@@ -388,6 +389,9 @@ class TimelapsedImageSeries:
         self.keyImage = keyImage
         self.keyMask = keyMask
         self.sequence = sequence
+
+        if self.keyMask is None:
+            self.keyMask = 'FULL_MASK'
 
         if self.keyImage is None:
             self.keyImage = next(iter(self.data))
