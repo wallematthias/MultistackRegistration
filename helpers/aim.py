@@ -43,6 +43,9 @@ def load_aim(filepath):
   return AIMFile(data, processing_log, voxelsize, position)
 
 def write_aim(aim_file, file_path):
+  
+  image = itk.imwrite(itk.GetImageFromArray(aim_file.data), file_path.replace('.AIM','.isq'))
+  
   return 1
 
 

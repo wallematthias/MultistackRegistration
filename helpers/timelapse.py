@@ -505,7 +505,7 @@ class TimelapsedImageSeries:
                         '_COMM_REGTO_{}.AIM'.format(t))))
         
         originaldata = [
-            item for item in list(self.data.keys()) if ('_seg' not in item) and ('_filt' not in item) nd ('USE MASKS FOR OPTIMAL RESULTS' not in item)]
+            item for item in list(self.data.keys()) if ('_seg' not in item) and ('_filt' not in item) and ('USE MASKS FOR OPTIMAL RESULTS' not in item)]
         for key in originaldata:
             images = self.get(key, to=t, order=order, n_images=n_images, min_size=min_size, max_size=max_size,step=step, interpolator=interpolator) 
             for image in images:
