@@ -42,6 +42,7 @@ def main():
         '--thresholds',
         nargs='+',
         type=int,
+        default = None,
         help='segmentation thresholds within the masks that were provided')
 
     parser.add_argument(

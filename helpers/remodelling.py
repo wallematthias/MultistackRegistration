@@ -35,7 +35,7 @@ def remodelling(
         repoducability='DIST'):
 
     if thresholds is None:
-         print('provide threshold')
+         thresholds = [320,]
 
     if keyMask is None:
         print('provide mask')
