@@ -167,14 +167,9 @@ class TimelapsedImage:
         return stacks
 
     def _getCreationDate(self, processing_log: str):
-        reg_mu_scaling = re.compile(r'Original Creation-Date\s*(.*)$')
-        for line in processing_log.splitlines():
-            match_mu_scaling = reg_mu_scaling.match(line)
-            if match_mu_scaling:
-                scaling = str(match_mu_scaling.group(1))
 
         # Create datetime string
-        datetime_str = str(scaling).replace(' ', '')
+        datetime_str = processing_log['CreationDate']
 
         # call datetime.strptime to convert
         # it into datetime datatype
