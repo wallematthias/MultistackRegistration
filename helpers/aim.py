@@ -44,7 +44,11 @@ def load_aim(filepath):
 
 def write_aim(aim_file, file_path):
   
-  image = itk.imwrite(itk.GetImageFromArray(aim_file.data), file_path.replace('.AIM','.isq'))
+  image = itk.GetImageFromArray(aim_file.data)
+
+  image.SetMetaDataDictionary(aim_file.processing_log)
+  
+  itk.imwrite(image, file_path.replace('.AIM','.mha'))
   
   return 1
 
