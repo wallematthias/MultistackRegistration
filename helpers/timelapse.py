@@ -185,20 +185,14 @@ class TimelapsedImage:
 
         if self.binary:
             arr = arr > 0.5  # remove border artefacts
-            aim.write_aim(
-                aim.AIMFile(arr,
-                            self.processing_log,
-                            self.voxelsize,
-                            self.position),
-                path)
-        else:
-            arr = Quantity(arr,'mg/cm**3')
-            aim.write_aim_with_scanner_units(
-                arr,
-                self.voxelsize,
-                self.processing_log,
-                path,
-                self.position)            
+        
+        aim.write_aim(
+            aim.AIMFile(arr,
+                        self.processing_log,
+                        self.voxelsize,
+                        self.position),
+            path)
+        
        
 
     def filter(self, filt='XCT2'):
