@@ -323,7 +323,7 @@ class TimelapsedImageSeries:
                 self.timepoints[key].append(tmp.timepoint)
                 # self.shapes.append(tmp.data.shape)
             
-        if len(self.data.keys)==1:
+        if len(self.data.keys())==1:
             self.data['FULL_MASK'] = deepcopy(self.data[next(iter(self.data))])
             for i, im in enumerate(self.data['FULL_MASK']):
                 self.data['FULL_MASK'][i].data=np.ones_like(self.data['FULL_MASK'][i].data)
