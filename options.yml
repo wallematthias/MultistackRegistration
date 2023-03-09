@@ -1,0 +1,58 @@
+baseline:
+- 1
+interpolator: linear
+Timelapse sequence: null
+Stackcorrect numof images: 2
+timelapsed interpolation: 3
+synthetic interpolation:
+- 3
+- 6
+- 2
+order:
+- timelapse
+- synthetic
+Optimizer (timelapse): powell
+Metric (timelapse): correlation
+Sampling (timelapse): 0.01
+MaxIter (timelapse): 100
+Interpolator (timelapse): linear
+Initial rotation (timelapse): null
+Initial translation (timelapse): null
+Shrink factors (timelapse):
+- 12
+- 8
+- 4
+- 2
+- 1
+- 1
+Smoothing sigmas (timelapse):
+- 0
+- 0
+- 0
+- 0
+- 1
+- 0
+Optimizer (stackcorrect): powell
+Metric (stackcorrect): correlation
+Sampling (stackcorrect): 0.1
+MaxIter (stackcorrect): 100
+Interpolator (stackcorrect): linear
+Initial rotation (stackcorrect):
+- 0
+- 0
+- 0
+Initial translation (stackcorrect):
+- 0
+- 0
+- 0
+Shrink factors (stackcorrect):
+- 1
+- 1
+Smoothing sigmas (stackcorrect):
+- 1
+- 0
+Overlap region: 15
+Remodelling threshold: 225
+Minimum cluster size: 12
+Report depth: 3
+Repoducability: DIST
