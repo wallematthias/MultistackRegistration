@@ -32,8 +32,9 @@ class AIMFile:
 def load_aim(filepath):
   
   image = itk.imread(filepath)
+  arr = np.transpose(np.asarray(image), (1, 2, 0))
 
-  data= Quantity(np.asarray(image),'mg/cm**3')
+  data= Quantity(arr,'mg/cm**3')
   processing_log= dict(image)
 
   voxelsize= Quantity(processing_log['spacing'],'mm')
