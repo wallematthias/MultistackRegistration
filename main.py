@@ -6,6 +6,9 @@ from argparse import ArgumentParser
 from glob import glob
 from pathlib import Path
 
+import sys
+sys.path.append("helpers")
+
 from helpers.registration import Registration
 from helpers.remodelling import remodelling
 from helpers.transformation import Transformation
