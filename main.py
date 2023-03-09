@@ -5,11 +5,11 @@ import numpy as np
 from argparse import ArgumentParser
 from glob import glob
 from pathlib import Path
-from ifb_framework.pipelines.hrpqct.multistack_registration.helpers.registration import Registration
-from ifb_framework.pipelines.hrpqct.multistack_registration.helpers.remodelling import remodelling
-from ifb_framework.pipelines.hrpqct.multistack_registration.helpers.transformation import Transformation
-from ifb_framework.pipelines.hrpqct.multistack_registration.helpers.timelapse import TimelapsedImage, TimelapsedImageSeries
-from ifb_framework import logger
+
+from helpers.registration import Registration
+from helpers.remodelling import remodelling
+from helpers.transformation import Transformation
+from helpers.timelapse import TimelapsedImage, TimelapsedImageSeries
 
 def main():
     '''
@@ -116,7 +116,7 @@ def main():
                     '').replace(
                         '*',
             ''))
-    logger.info(default_transform)
+    print(default_transform)
     
     if os.path.exists(default_transform) & (args.transform is None):
         print('Using transforms found in default path: {}'.format(default_transform))

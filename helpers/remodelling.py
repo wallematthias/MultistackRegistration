@@ -1,6 +1,5 @@
 from copy import deepcopy
 from itertools import combinations
-from ifb_framework.pipelines.hrpqct.multistack_registration.helpers.reporting import dftotxt
 import numpy as np
 import pandas as pd
 from skimage.morphology import remove_small_objects
@@ -13,8 +12,9 @@ from scipy import stats
 import pandas as pd
 import numpy as np
 from scipy import ndimage
-from ifb_framework.pipelines.hrpqct.contouring.helpers.imdebug import imdebug
-from ifb_framework.pipelines.hrpqct.contouring.helpers.segment_hrpqct import segment_hrpqct
+from reporting import dftotxt
+from imdebug import imdebug
+from segment_hrpqct import segment_hrpqct
 
 
 

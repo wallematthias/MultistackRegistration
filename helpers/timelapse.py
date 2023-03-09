@@ -11,17 +11,19 @@ import SimpleITK as sitk
 import pandas as pd
 from copy import deepcopy
 from datetime import datetime
-from ifb_framework import Quantity
 from scipy.ndimage import grey_closing
-from ifb_framework.IO_modules import aim
 from skimage.filters import gaussian
 from scipy.ndimage import binary_dilation
 from skimage.morphology import remove_small_objects
-from ifb_framework.image_processing.resize_reposition_image import crop_pad_image
-from ifb_framework.pipelines.hrpqct.multistack_registration.helpers.registration import Registration
-from ifb_framework.pipelines.hrpqct.multistack_registration.helpers.remodelling import remodelling
-from ifb_framework.pipelines.hrpqct.multistack_registration.helpers.transformation import Transformation
-from ifb_framework.pipelines.hrpqct.multistack_registration.helpers.reporting import table1, table2, table3, table5, randomart, finish
+
+from pint import Quantity
+
+import aim
+from resize_reposition_image import crop_pad_image
+from registration import Registration
+from remodelling import remodelling
+from transformation import Transformation
+from reporting import table1, table2, table3, table5, randomart, finish
 
 warnings.filterwarnings("ignore")
 
