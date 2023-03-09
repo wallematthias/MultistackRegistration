@@ -305,9 +305,7 @@ class TimelapsedImageSeries:
             min_pad=5) -> None:
 
         for key, items in data.items():
-            print(data)
-            print(key)
-            print(items)
+
             if key not in self.data:
                 self.data[key] = []
                 self.timepoints[key] = []
@@ -324,12 +322,19 @@ class TimelapsedImageSeries:
                 self.data[key].append(tmp)
                 self.timepoints[key].append(tmp.timepoint)
                 # self.shapes.append(tmp.data.shape)
+            
+        self.data['FULL_MASK'] = deepcopy(self.data[next(iter(self.data))])
+        for i, im in enumerate(self.data['FULL_MASK']):
+            self.data['FULL_MASK'][i].data=np.ones_like(self.data['FULL_MASK'][i].data)
+            self.data['FULL_MASK'][i].binary=True
+        self.timepoints['FULL_MASK'] = self.timepoints[next(iter(self.data))]
 
         if sortby is None:
             sortby = next(iter(self.data))
 
         aquisitionTimes = self.timepoints[sortby]
         self.nTimepoints = len(aquisitionTimes)
+
 
         for key in data.keys():
             _, data[key] = (list(t) for t in zip(
