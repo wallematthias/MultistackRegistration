@@ -31,26 +31,35 @@ class AIMFile:
 
 def load_aim(filepath):
   
-  image = itk.imread(filepath)
-  arr = np.transpose(np.asarray(image), (1, 2, 0))
+    image = itk.imread(filepath)
+    arr = np.transpose(np.asarray(image), (1, 2, 0))
 
-  data= Quantity(arr,'mg/cm**3')
-  processing_log= dict(image)
+    data= Quantity(arr,'mg/cm**3')
+    processing_log= dict(image)
 
-  voxelsize= Quantity(processing_log['spacing'],'mm')
-  position= np.round(processing_log['origin']/processing_log['spacing']).astype(int)
+    voxelsize= Quantity(processing_log['spacing'],'mm')
+    position= np.round(processing_log['origin']/processing_log['spacing']).astype(int)
 
-  return AIMFile(data, processing_log, voxelsize, position)
+    return AIMFile(data, processing_log, voxelsize, position)
 
 def write_aim(aim_file, file_path):
   
-  image = itk.GetImageFromArray(aim_file.data)
+    image = itk.GetImageFromArray(aim_file.data)
 
-  image.SetMetaDataDictionary(aim_file.processing_log)
+    # Create a new itk.MetaDataDictionary object
+    itk_metadata_dict = itk.MetaDataDictionary()
+
+    # Iterate through the dictionary items and set them on the itk_metadata_dict
+    for key, value in aim_file.processing_log.items():
+    # Convert the value to a string if it is not already a string
+        if not isinstance(value, str):
+            value = str(value)
+        itk_metadata_dict[key] = value
+
+
+    itk.imwrite(image, file_path.replace('.AIM','.mha'))
   
-  itk.imwrite(image, file_path.replace('.AIM','.mha'))
-  
-  return 1
+    return 1
 
 
 def pad_to_common_coordinate_system(aim_files, padding_values=None):
