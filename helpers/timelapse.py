@@ -479,9 +479,24 @@ class TimelapsedImageSeries:
                 
         #save common masks
         for key in self.keyMask:
-            for temp in range(0, self.nTimepoints):
-                masks = self.get(key, to=temp, stackCorr=False)
-                comm_mask = deepcopy(masks[temp])
+            if key !='TOTAL_MASK':
+                for temp in range(0, self.nTimepoints):
+                    masks = self.get(key, to=temp, stackCorr=False)
+                    comm_mask = deepcopy(masks[temp])
+                    comm_mask.data = np.all([mask.data>0 for mask in masks],axis=0)
+                    comm_mask.save_aim(
+                        os.path.join(
+                            path,
+                            os.path.basename(
+                                comm_mask.path).replace(
+                                '.AIM',
+                                '_COMM.AIM'.format(temp))))
+        
+        # This is the stack corr common mask now 
+        for key in self.keyMask:
+            if key !='TOTAL_MASK':
+                masks = self.get(key, to=t, stackCorr=True)
+                comm_mask = deepcopy(masks[t])
                 comm_mask.data = np.all([mask.data>0 for mask in masks],axis=0)
                 comm_mask.save_aim(
                     os.path.join(
@@ -489,34 +504,22 @@ class TimelapsedImageSeries:
                         os.path.basename(
                             comm_mask.path).replace(
                             '.AIM',
-                            '_COMM.AIM'.format(temp))))
-        
-        # This is the stack corr common mask now 
-        for key in list(self.keyMask if ('TOTAL_MASK' not in key)):
-            masks = self.get(key, to=t, stackCorr=True)
-            comm_mask = deepcopy(masks[t])
-            comm_mask.data = np.all([mask.data>0 for mask in masks],axis=0)
-            comm_mask.save_aim(
-                os.path.join(
-                    path,
-                    os.path.basename(
-                        comm_mask.path).replace(
-                        '.AIM',
-                        '_COMM_REGTO_{}.AIM'.format(t))))
-        
+                            '_COMM_REGTO_{}.AIM'.format(t))))
+            
         originaldata = [
             item for item in list(self.data.keys()) if ('_seg' not in item) and ('_filt' not in item)]
         for key in originaldata:
-            images = self.get(key, to=t, order=order, n_images=n_images, min_size=min_size, max_size=max_size,step=step, interpolator=interpolator) 
-            for image in images:
-                image.save_aim(
-                    os.path.join(
-                        path,
-                        os.path.basename(
-                            image.path).replace(
-                            '.AIM',
-                            '_REGTO_{}.AIM'.format(t))))
-                
+            if key !='TOTAL_MASK':
+                images = self.get(key, to=t, order=order, n_images=n_images, min_size=min_size, max_size=max_size,step=step, interpolator=interpolator) 
+                for image in images:
+                    image.save_aim(
+                        os.path.join(
+                            path,
+                            os.path.basename(
+                                image.path).replace(
+                                '.AIM',
+                                '_REGTO_{}.AIM'.format(t))))
+                    
 
         report, df, names = table5(self)
         self.dataframes += df
