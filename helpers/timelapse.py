@@ -479,8 +479,7 @@ class TimelapsedImageSeries:
                 
         #save common masks
         for key in self.keyMask:
-            print(key)
-            if key !='TOTAL_MASK':
+            if key !='FULL_MASK':
                 for temp in range(0, self.nTimepoints):
                     masks = self.get(key, to=temp, stackCorr=False)
                     comm_mask = deepcopy(masks[temp])
@@ -495,7 +494,7 @@ class TimelapsedImageSeries:
         
         # This is the stack corr common mask now 
         for key in self.keyMask:
-            if key !='TOTAL_MASK':
+            if key !='FULL_MASK':
                 masks = self.get(key, to=t, stackCorr=True)
                 comm_mask = deepcopy(masks[t])
                 comm_mask.data = np.all([mask.data>0 for mask in masks],axis=0)
@@ -510,7 +509,7 @@ class TimelapsedImageSeries:
         originaldata = [
             item for item in list(self.data.keys()) if ('_seg' not in item) and ('_filt' not in item)]
         for key in originaldata:
-            if key !='TOTAL_MASK':
+            if key !='FULL_MASK':
                 images = self.get(key, to=t, order=order, n_images=n_images, min_size=min_size, max_size=max_size,step=step, interpolator=interpolator) 
                 for image in images:
                     image.save_aim(
