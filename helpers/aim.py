@@ -44,7 +44,7 @@ def load_aim(filepath):
 
 def write_aim(aim_file, file_path):
   
-    image = itk.GetImageFromArray(aim_file.data)
+    image = itk.GetImageFromArray(np.asarray(aim_file.data).astype(float))
 
     # Create a new itk.MetaDataDictionary object
     itk_metadata_dict = itk.MetaDataDictionary()

@@ -509,6 +509,7 @@ class TimelapsedImageSeries:
         originaldata = [
             item for item in list(self.data.keys()) if ('_seg' not in item) and ('_filt' not in item)]
         for key in originaldata:
+            print(key)
             if key !='TOTAL_MASK':
                 images = self.get(key, to=t, order=order, n_images=n_images, min_size=min_size, max_size=max_size,step=step, interpolator=interpolator) 
                 for image in images:
