@@ -13,7 +13,7 @@ import pandas as pd
 import numpy as np
 from scipy import ndimage
 from helpers.reporting import dftotxt
-from helpers.imdebug import imdebug
+#from helpers.imdebug import imdebug
 from helpers.segment_hrpqct import segment_hrpqct
 
 
@@ -59,7 +59,7 @@ def remodelling(
 
         # Limit the segmentations to the common and mask region (maybe add gauss filter here)
         segData = [segment_hrpqct(im.data * common_region, voxelsize=im.voxelsize, masks=mask.data, thresholds=thr) for im, mask in zip(images,masks)]
-        imdebug(segData)
+        #imdebug(segData)
         
         # Limit the density image to the common and mask region
         densities = [im.data * mask.data * common_region for im, mask in zip(images,masks)]
