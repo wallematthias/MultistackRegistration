@@ -174,7 +174,7 @@ class TimelapsedImage:
         # call datetime.strptime to convert
         # it into datetime datatype
         datetime_obj = datetime.strptime(datetime_str,
-                                         "%d-%b-%Y%H:%M:%S.%f")
+                                         '%d-%b-%Y %H:%M:%S.%f')
 
         return datetime_obj
 
