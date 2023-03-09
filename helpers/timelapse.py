@@ -390,7 +390,7 @@ class TimelapsedImageSeries:
         self.keyMask = keyMask
         self.sequence = sequence
 
-        if self.keyMask is None:
+        if self.keyMask == []:
             self.keyMask = 'FULL_MASK'
 
         if self.keyImage is None:
