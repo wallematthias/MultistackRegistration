@@ -305,6 +305,9 @@ class TimelapsedImageSeries:
             min_pad=5) -> None:
 
         for key, items in data.items():
+            print(data)
+            print(key)
+            print(items)
             if key not in self.data:
                 self.data[key] = []
                 self.timepoints[key] = []
