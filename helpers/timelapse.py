@@ -323,12 +323,13 @@ class TimelapsedImageSeries:
                 self.timepoints[key].append(tmp.timepoint)
                 # self.shapes.append(tmp.data.shape)
             
-        self.data['FULL_MASK'] = deepcopy(self.data[next(iter(self.data))])
-        for i, im in enumerate(self.data['FULL_MASK']):
-            self.data['FULL_MASK'][i].data=np.ones_like(self.data['FULL_MASK'][i].data)
-            self.data['FULL_MASK'][i].binary=True
-            self.data['FULL_MASK'][i].path='Empty Mask Placeholder'
-        self.timepoints['FULL_MASK'] = self.timepoints[next(iter(self.data))]
+        if len(self.data.keys)==1:
+            self.data['FULL_MASK'] = deepcopy(self.data[next(iter(self.data))])
+            for i, im in enumerate(self.data['FULL_MASK']):
+                self.data['FULL_MASK'][i].data=np.ones_like(self.data['FULL_MASK'][i].data)
+                self.data['FULL_MASK'][i].binary=True
+                self.data['FULL_MASK'][i].path='USE MASKS FOR OPTIMAL RESULTS'
+            self.timepoints['FULL_MASK'] = self.timepoints[next(iter(self.data))]
 
         if sortby is None:
             sortby = next(iter(self.data))
@@ -391,7 +392,7 @@ class TimelapsedImageSeries:
         self.sequence = sequence
 
         if self.keyMask == []:
-            self.keyMask = 'FULL_MASK'
+            self.keyMask = ['FULL_MASK',]
 
         if self.keyImage is None:
             self.keyImage = next(iter(self.data))
