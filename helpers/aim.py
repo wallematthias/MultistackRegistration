@@ -33,9 +33,11 @@ def load_aim(filepath):
   
     image = itk.imread(filepath)
     arr = np.transpose(np.asarray(image), (1, 2, 0))
-
-    data= Quantity(arr,'mg/cm**3')
     processing_log= dict(image)
+
+    density = processing_log['RescaleSlope'] * mu + processing_log['RescaleIntercept']
+
+    data= Quantity(density,'mg/cm**3')
 
     voxelsize= Quantity(processing_log['spacing'],'mm')
     position= np.round(processing_log['origin']/processing_log['spacing']).astype(int)
@@ -56,6 +58,7 @@ def write_aim(aim_file, file_path):
             value = str(value)
         itk_metadata_dict[key] = value
 
+    image.SetMetaDataDictionary(itk_metadata_dict)
 
     itk.imwrite(image, file_path.replace('.AIM','.mha'))
   
