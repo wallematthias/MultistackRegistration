@@ -26,7 +26,7 @@ def main():
         default='.',
         help='input path will be used with glob')
     parser.add_argument('--keyImage', type=str, help='image key')
-    parser.add_argument('--keyMask', nargs='+', help='mask key')
+    parser.add_argument('--keyMask', nargs='+', default=None, help='mask key')
     parser.add_argument('--transform', default=None, help='path to transform')
     parser.add_argument(
         '--output',
