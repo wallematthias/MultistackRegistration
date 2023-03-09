@@ -18,12 +18,12 @@ from skimage.morphology import remove_small_objects
 
 from pint import Quantity
 
-import aim
-from resize_reposition_image import crop_pad_image
-from registration import Registration
-from remodelling import remodelling
-from transformation import Transformation
-from reporting import table1, table2, table3, table5, randomart, finish
+from helpers import aim
+from helpers.resize_reposition_image import crop_pad_image
+from helpers.registration import Registration
+from helpers.remodelling import remodelling
+from helpers.transformation import Transformation
+from helpers.reporting import table1, table2, table3, table5, randomart, finish
 
 warnings.filterwarnings("ignore")
 

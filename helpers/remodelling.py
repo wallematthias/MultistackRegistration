@@ -12,9 +12,9 @@ from scipy import stats
 import pandas as pd
 import numpy as np
 from scipy import ndimage
-from reporting import dftotxt
-from imdebug import imdebug
-from segment_hrpqct import segment_hrpqct
+from helpers.reporting import dftotxt
+from helpers.imdebug import imdebug
+from helpers.segment_hrpqct import segment_hrpqct
 
 
 

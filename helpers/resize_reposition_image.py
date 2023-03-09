@@ -2,7 +2,7 @@ import numpy as np
 import warnings
 from skimage.transform import rescale
 from pint import Quantity
-from aim import pad_to_common_coordinate_system
+from helpers.aim import pad_to_common_coordinate_system
 
 def crop_pad_image(reference_image, resize_image, ref_img_position=None,
                    resize_img_position=None, delta_position=None, padding_value=None):
