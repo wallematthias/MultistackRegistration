@@ -35,7 +35,7 @@ def load_aim(filepath):
     arr = np.transpose(np.asarray(image), (1, 2, 0))
     processing_log= dict(image)
 
-    density = processing_log['RescaleSlope'] * mu + processing_log['RescaleIntercept']
+    density = processing_log['RescaleSlope'] * arr + processing_log['RescaleIntercept']
 
     data= Quantity(density,'mg/cm**3')
 
