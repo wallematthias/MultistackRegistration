@@ -32,13 +32,19 @@ class AIMFile:
 
 def load_aim(filepath):
   
-    image = itk.imread(filepath)
-    arr = np.transpose(np.asarray(image), (1, 2, 0))
+    try:
+        image = itk.imread(filepath)
 
-    mu_scaling, hu_mu_water, hu_mu_air, density_slope, density_intercept = get_aim_calibration_constants_from_processing_log(filepath)
-    density = convert_hounsfield_to_mgccm(arr,
-        mu_scaling, hu_mu_water, hu_mu_air, density_slope, density_intercept)
-    data= Quantity(density,'mg/cm**3')
+        arr = np.transpose(np.asarray(image), (1, 2, 0))
+
+        mu_scaling, hu_mu_water, hu_mu_air, density_slope, density_intercept = get_aim_calibration_constants_from_processing_log(filepath)
+        density = convert_hounsfield_to_mgccm(arr,
+            mu_scaling, hu_mu_water, hu_mu_air, density_slope, density_intercept)
+        data= Quantity(density,'mg/cm**3')
+    except:
+        print('Reading mask Data')
+        image = itk.imread(filepath,itk.UC)
+        data= Quantity(np.transpose(np.asarray(image)>0, (1, 2, 0)),'dimensionless')
 
     processing_log= dict(image)
     processing_log['density_slope'] = density_slope
