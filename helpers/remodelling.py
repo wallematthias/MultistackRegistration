@@ -94,6 +94,7 @@ def remodelling(
             resorption = np.sum(r_vol) / fv_bv
             
             remodelling_image = deepcopy(images[baseline])
+            remodelling_image.binary=False
             remodelling_image.data = np.zeros_like(baseline_seg)
             remodelling_image.data[baseline_seg>0] = 2
             remodelling_image.data[r_vol>0] = 1
