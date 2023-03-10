@@ -107,6 +107,7 @@ def write_aim(aim_file: AIMFile, file_path: str) -> None:
         # Convert the value to a string if it is not already a string
         if not isinstance(value, str):
             value = str(value)
+        print(key + ': ' + value)
         itk_metadata_dict[key] = value
 
     # Set the itk_metadata_dict on the itk image
