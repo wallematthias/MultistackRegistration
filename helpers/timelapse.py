@@ -489,7 +489,11 @@ class TimelapsedImageSeries:
 
         # Save remodelling images 
         for im in self.remodelling_images:
-            im.save_aim(im.path)
+            im.save_aim(
+                os.path.join(
+                        path,
+                        os.path.basename(
+                            im.path)))
 
 
         originaldata = [
