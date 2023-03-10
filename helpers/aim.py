@@ -83,25 +83,38 @@ def load_aim(filepath: str) -> AIMFile:
     return AIMFile(data, processing_log, voxelsize, position)
 
 
-def write_aim(aim_file, file_path):
+def write_aim(aim_file: AIMFile, file_path: str) -> None:
+    """
+    Write an AIM file from an AIMFile object.
+
+    Args:
+        aim_file (AIMFile): An object that contains the image data in a standardized format.
+        file_path (str): The path where the AIM file needs to be saved.
+
+    Returns:
+        None
+
+    """
   
+    # Convert the data in the AIMFile object to an itk image
     image = itk.GetImageFromArray(np.asarray(aim_file.data).astype(float))
 
     # Create a new itk.MetaDataDictionary object
     itk_metadata_dict = itk.MetaDataDictionary()
 
-    # Iterate through the dictionary items and set them on the itk_metadata_dict
+    # Iterate through the dictionary items in the AIMFile processing log and set them on the itk_metadata_dict
     for key, value in aim_file.processing_log.items():
-    # Convert the value to a string if it is not already a string
+        # Convert the value to a string if it is not already a string
         if not isinstance(value, str):
             value = str(value)
         itk_metadata_dict[key] = value
 
+    # Set the itk_metadata_dict on the itk image
     image.SetMetaDataDictionary(itk_metadata_dict)
 
-    itk.imwrite(image, file_path.replace('.AIM','.mha'))
-  
-    return 1
+    # Write the itk image to a file with the extension '.mha'
+    file_path = file_path.replace('.aim','.AIM')
+    itk.imwrite(image, file_path.split('.AIM')[0]+'.mha')
 
 
 def get_aim_calibration_constants_from_processing_log(filename):
