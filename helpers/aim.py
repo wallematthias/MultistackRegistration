@@ -67,7 +67,7 @@ def load_aim(filepath: str) -> AIMFile:
     except:
 
         # If the file cannot be read as an image file, assume it is a binary mask file
-        print('Reading mask Data')
+        #print('Reading mask Data')
         image = itk.imread(filepath, itk.UC)
         
         # Convert the mask data to a Quantity object with units of 'dimensionless'
