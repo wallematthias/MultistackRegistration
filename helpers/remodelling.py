@@ -2,111 +2,108 @@ from copy import deepcopy
 from itertools import combinations
 import numpy as np
 import pandas as pd
-from skimage.morphology import remove_small_objects
-from scipy.ndimage import binary_erosion
-import SimpleITK as sitk
-#import termplotlib as tpl
-import numpy as np
-from skimage.measure import regionprops, regionprops_table
+from skimage.measure import regionprops
 from scipy import stats
-import pandas as pd
-import numpy as np
 from scipy import ndimage
 from helpers.reporting import dftotxt
-#from helpers.imdebug import imdebug
 from helpers.segment_hrpqct import segment_hrpqct
 
 
-
 def remodelling(
-        series,
-        keyImage='dens',
-        keyMask=[
-            'trab',
-            'cort'],
+    series,
+    key_image='dens',
+    key_mask=['trab', 'cort'],
     baseline=0,
-    thresholds=[
-            320,
-            450],
-        remThr=225,
-        min_size=12,
-        distance=3,
-        regto=0,
-        repoducability='DIST'):
+    thresholds=[320, 450],
+    rem_thr=225,
+    min_size=12,
+    distance=3,
+    regto=0,
+    reproducibility='DIST'
+):
+    """
+    Calculates bone remodelling rates for given timepoints and masks.
 
-    if thresholds is None:
-         thresholds = [320,]
+    Args:
+        series: An object that contains time-series image data.
+        key_image (str): The key of the image to use for density calculations.
+        key_mask (list[str]): The keys of the masks to use for segmentation.
+        baseline (int): The index of the baseline timepoint.
+        thresholds (list[float]): The threshold values to use for segmentation.
+        rem_thr (float): The threshold for detecting bone remodelling.
+        min_size (int): The minimum size of clusters to consider for remodelling.
+        distance (int): The distance between voxels to consider for clustering.
+        regto (int): The index of the timepoint to register to.
+        reproducibility (str): The reproducibility measure to use for clustering.
 
-    if keyMask is None:
+    Returns:
+        tuple: A tuple containing the docstring, dataframes, and datanames.
+
+    """
+    if key_mask is None:
         print('provide mask')
-        
-    datanames = []
-    dataframes = []
+        return None
+    
+    if thresholds is None:
+        thresholds = [320]
+
     docstring = ''
-    
-    # Transform the image according to transformation matrices
-    images = series.get(keyImage, to=regto)  
-    
-    # Calculate a common region as 1 eroded overlay between image regions 
+    dataframes = []
+    datanames = []
+
+    # Create a common region as the intersection of image domains
     # (this erosion is necessary for slanted surfaces)
-    common_region = binary_erosion(
-        np.all([np.any(im.domain, axis=0) for im in series.get(keyImage, to=regto)], axis=0))
-    
-    for thr, key in zip(thresholds, keyMask):
-        
-        # Transform the image according to transformation matrices
+    images = series.get(key_image, to=regto)
+    common_region = np.all([np.any(im.domain, axis=0) for im in images], axis=0)
+    common_region = binary_erosion(common_region)
+
+    for thr, key in zip(thresholds, key_mask):
         masks = series.get(key, to=regto)
 
-        # Limit the segmentations to the common and mask region (maybe add gauss filter here)
-        segData = [segment_hrpqct(im.data * common_region, voxelsize=im.voxelsize, masks=mask.data, thresholds=thr) for im, mask in zip(images,masks)]
-        #imdebug(segData)
-        
-        # Limit the density image to the common and mask region
-        densities = [im.data * mask.data * common_region for im, mask in zip(images,masks)]
-        
-        # Initiate the remodellling matrices based on the number of timepoints
-        dfs = []
-        for baseline, followup in combinations(
-                range(0, series.nTimepoints), 2):
-
-            # Get segmented baseline data
-            baseline_seg = segData[baseline] > 0.5
-            
-            # Get segmented followup data
-            followup_seg = segData[followup] > 0.5
-
-            # Calcualte formation and resorption
-            binaryF = (followup_seg>0) & (baseline_seg==0)
-            binaryR = (followup_seg==0) & (baseline_seg>0)
-            grayF = (densities[followup] - densities[baseline]) > (remThr)
-            grayR = (densities[followup] - densities[baseline]) < (-remThr)
-            
-            # Here we assemble the matrices for formation/resortpion
-            dfs.append(
-                {
-                    't0': baseline,
-                    't1': followup,
-                    'for': np.sum(remove_small_objects(binaryF & grayF, min_size=min_size))/ np.sum(baseline_seg), #divide the FV/BV
-                    'res': np.sum(remove_small_objects(binaryR & grayR, min_size=min_size))/ np.sum(baseline_seg), #divide the RV/BV
-                    'BV': np.sum(baseline_seg) #Save BV
-                }
+        # Limit the segmentations to the common and mask region
+        seg_data = []
+        for im, mask in zip(images, masks):
+            seg = segment_hrpqct(
+                im.data * common_region,
+                voxelsize=im.voxelsize,
+                masks=mask.data,
+                thresholds=thr
             )
-                
-        #format the remodelling string for the docstring
-        dfRem = pd.DataFrame(dfs)
+            seg_data.append(seg)
 
-        # append this table for saving
-        dataframes.append(dfRem)
-        datanames.append(
-            'TABLE_4_GRAY_{}_{}_REGTO{}'.format(
-                key,
-                remThr,regto))  
+        # Limit the density image to the common and mask region
+        densities = [im.data * mask.data * common_region for im, mask in zip(images, masks)]
         
-        # Format and save remodelling rates in docstring
-        dfRem = dfRem.round(4)
-        docstring += '\n' + \
-            dftotxt(dfRem, name='Table 4 {}: formation (FV/BV) and resorption (RV/BV) between Timepoints with clusters >{} voxel >{} mg/ccm'.format(key, min_size,remThr))
+        # Initiate the remodelling matrices based on the number of timepoints
+        dfs = []
+        for baseline, followup in combinations(range(series.nTimepoints), 2):
+            baseline_seg = seg_data[baseline] > 0.5
+            followup_seg = seg_data[followup] > 0.5
+            binary_f = (followup_seg > 0) & (baseline_seg == 0)
+            binary_r = (followup_seg == 0) & (baseline_seg > 0)
+            gray_f = (densities[followup] - densities[baseline]) > rem_thr
+            gray_r = (densities[followup] - densities[baseline]) < -rem_thr
+            fv_bv = np.sum(baseline_seg)
 
+            # Calculate formation and resorption
+            formation = np.sum(remove_small_objects(binary_f & gray_f, min_size=min_size)) / fv_bv
+            resorption = np.sum(remove_small_objects(binary_r & gray_r, min_size=min_size)) / fv_bv
+            
+            # Save the results to the dataframe
+            dfs.append({
+                't0': baseline,
+                't1': followup,
+                'for': formation,
+                'res': resorption,
+                'BV': fv_bv
+            })
+                
+        # Format the remodelling rates for saving
+        df_rem = pd.DataFrame(dfs)
+        dataframes.append(df_rem)
+        datanames.append(f'TABLE_4_GRAY_{key}_{rem_thr}_REGTO{regto}')
+        df_rem = df_rem.round(4)
+        docstring += f'\n{dftotxt(df_rem, name=f"Table 4 {key}: formation (FV/BV) and resorption (RV/BV) between Timepoints with clusters >{min_size} voxel >{rem_thr} mg/ccm")}'
+    
     print(docstring)
     return docstring, dataframes, datanames
-
