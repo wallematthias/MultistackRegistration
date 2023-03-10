@@ -1,7 +1,4 @@
 import os
-import re
-import time
-import yaml
 import warnings
 import numpy as np
 from argparse import ArgumentParser
@@ -63,7 +60,6 @@ def generate_settings():
     settings['Remodelling threshold'] = 225
     settings['Minimum cluster size'] = 12
     settings['Report depth'] = 3
-    settings['Repoducability'] = 'DIST'
 
     return settings
 
@@ -450,22 +446,7 @@ class TimelapsedImageSeries:
             '*',
             '')
         self.transform.saveTransform(os.path.join(path, filename))
-
-
-        
-        '''
-        for key in self.data.keys():
-            images = self.get(key, to=t,interpolator=interpolator)
-            for image in images:
-                image.save_aim(
-                    os.path.join(
-                        path,
-                        os.path.basename(
-                            image.path).replace(
-                            '.AIM',
-                            '_REGTO_{}.AIM'.format(t))))
-
-        '''     
+  
         #save raw densities with new size
         for temp in range(0, self.nTimepoints):
             raw_im = self.get(self.keyImage,temp)
@@ -505,7 +486,7 @@ class TimelapsedImageSeries:
                             comm_mask.path).replace(
                             '.AIM',
                             '_COMM_REGTO_{}.AIM'.format(t))))
-            
+
         originaldata = [
             item for item in list(self.data.keys()) if ('_seg' not in item) and ('_filt' not in item)]
         for key in originaldata:
@@ -789,27 +770,20 @@ class TimelapsedImageSeries:
         if key_mask == []:
             key_mask = ['FULL_MASK',]
 
-        docstring, dataframes, datanames = remodelling(self, key_image=key_image, key_mask=key_mask, baseline=baseline,
+        docstring, dataframes, datanames, remodelling_images = remodelling(self, key_image=key_image, key_mask=key_mask, baseline=baseline,
                                                        thresholds=thresholds, rem_thr=rem_thr, min_size=min_size, distance=distance, regto=regto)
         self.report += docstring
         self.dataframes += dataframes
         self.datanames += datanames
+        self.data['remodelling'] = remodelling_images
 
     def _syntheticFilling(self, images: list, min_size=3, max_size=23, step=5):
 
         filledimages = []
         for image in images:
             image = deepcopy(image)
-    
-            #missingMask = np.any(image.domain,axis=0)==0
-            #forced_synthetic_region = np.bitwise_xor(binary_dilation(np.any(
-            #    image.domain, axis=0),iterations=2),np.any(image.domain, axis=0))
-            #image.data[forced_synthetic_region]=0
-            
             filledImageGaps = deepcopy(image.data)
-            #missing = deepcopy(missingMask)
   
-
             # iteratively filling the image
             for i in range(min_size, max_size, step):
                 # Closing the image but only filling the gaps

@@ -42,7 +42,7 @@ def remodelling(
         return None
     
     if thresholds is None:
-        thresholds = [320]
+        thresholds = [320, 450]
 
     docstring = ''
     dataframes = []
@@ -71,8 +71,11 @@ def remodelling(
         # Limit the density image to the common and mask region
         densities = [im.data * mask.data * common_region for im, mask in zip(images, masks)]
         
+        
+
         # Initiate the remodelling matrices based on the number of timepoints
         dfs = []
+        remodelling_images = []
         for baseline, followup in combinations(range(series.nTimepoints), 2):
             baseline_seg = seg_data[baseline] > 0.5
             followup_seg = seg_data[followup] > 0.5
@@ -86,6 +89,15 @@ def remodelling(
             formation = np.sum(remove_small_objects(binary_f & gray_f, min_size=min_size)) / fv_bv
             resorption = np.sum(remove_small_objects(binary_r & gray_r, min_size=min_size)) / fv_bv
             
+            remodelling_image = deepcopy(images[baseline])
+            remodelling_image.data = np.zeros_like(baseline_seg)
+            remodelling_image.data[resorption>0] = 1
+            remodelling_image.data[baseline_seg>0] = 2
+            remodelling_image.data[formation>0] = 3
+            remodelling_image.path = remodelling_image.path.replace('.AIM','_REM_B{}_F{}.AIM'.format(baseline,followup))
+            remodelling_image.timepoint = regto
+            remodelling_images.append(remodelling_image)
+
             # Save the results to the dataframe
             dfs.append({
                 't0': baseline,
@@ -103,4 +115,4 @@ def remodelling(
         docstring += f'\n{dftotxt(df_rem, name=f"Table 4 {key}: formation (FV/BV) and resorption (RV/BV) between Timepoints with clusters >{min_size} voxel >{rem_thr} mg/ccm")}'
     
     print(docstring)
-    return docstring, dataframes, datanames
+    return docstring, dataframes, datanames, remodelling_images
