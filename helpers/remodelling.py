@@ -18,8 +18,7 @@ def remodelling(
     rem_thr=225,
     min_size=12,
     distance=3,
-    regto=0,
-    reproducibility='DIST'
+    regto=0
 ):
     """
     Calculates bone remodelling rates for given timepoints and masks.
@@ -34,7 +33,6 @@ def remodelling(
         min_size (int): The minimum size of clusters to consider for remodelling.
         distance (int): The distance between voxels to consider for clustering.
         regto (int): The index of the timepoint to register to.
-        reproducibility (str): The reproducibility measure to use for clustering.
 
     Returns:
         tuple: A tuple containing the docstring, dataframes, and datanames.

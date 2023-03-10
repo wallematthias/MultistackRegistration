@@ -784,14 +784,13 @@ class TimelapsedImageSeries:
         rem_thr=225,
         min_size=12,
         distance=3,
-        regto=0,
-            repoducability='DIST'):
+        regto=0):
 
         if key_mask == []:
             key_mask = ['FULL_MASK',]
 
         docstring, dataframes, datanames = remodelling(self, key_image=key_image, key_mask=key_mask, baseline=baseline,
-                                                       thresholds=thresholds, rem_thr=rem_thr, min_size=min_size, distance=distance, repoducability=repoducability, regto=regto)
+                                                       thresholds=thresholds, rem_thr=rem_thr, min_size=min_size, distance=distance, regto=regto)
         self.report += docstring
         self.dataframes += dataframes
         self.datanames += datanames

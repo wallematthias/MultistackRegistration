@@ -188,8 +188,7 @@ def main():
             rem_thr=settings['Remodelling threshold'],
             min_size=settings['Minimum cluster size'],
             distance=settings['Report depth'],
-            regto=series.baseline,
-            repoducability=settings['Repoducability'])
+            regto=series.baseline)
 
     series.save(
         series.baseline,
