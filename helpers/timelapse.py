@@ -315,11 +315,12 @@ class TimelapsedImageSeries:
 
         # adds an all 1 mask if no mask is provided    
         if len(self.data.keys())==1:
+            print('Adding all 1 mask')
             self.data['FULL_MASK'] = deepcopy(self.data[next(iter(self.data))])
             for i, im in enumerate(self.data['FULL_MASK']):
                 self.data['FULL_MASK'][i].data=np.ones_like(self.data['FULL_MASK'][i].data)
                 self.data['FULL_MASK'][i].binary=True
-                self.data['FULL_MASK'][i].path='USE MASKS FOR OPTIMAL RESULTS'
+                self.data['FULL_MASK'][i].path=self.data['FULL_MASK'][i].path.replace('.AIM','_FULL_MASK.AIM')
             self.timepoints['FULL_MASK'] = self.timepoints[next(iter(self.data))]
 
         if sortby is None:

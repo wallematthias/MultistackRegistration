@@ -70,7 +70,7 @@ def load_aim(filepath: str) -> AIMFile:
         image = itk.imread(filepath, itk.UC)
         
         # Convert the mask data to a Quantity object with units of 'dimensionless'
-        data= np.transpose(np.asarray(image) > 0, (1, 2, 0)).astype(int)
+        data= Quantity(np.transpose(np.asarray(image) > 0, (1, 2, 0)).astype(int),'dimensionless')
         
         # Create a dictionary containing the processing log
         processing_log = dict(image)
