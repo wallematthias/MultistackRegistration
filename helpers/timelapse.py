@@ -460,7 +460,7 @@ class TimelapsedImageSeries:
                 
         #save common masks
         for key in self.keyMask:
-            if key !='FULL_MASK':
+            #if key !='FULL_MASK':
                 for temp in range(0, self.nTimepoints):
                     masks = self.get(key, to=temp, stackCorr=False)
                     comm_mask = deepcopy(masks[temp])
@@ -486,6 +486,11 @@ class TimelapsedImageSeries:
                             comm_mask.path).replace(
                             '.AIM',
                             '_COMM_REGTO_{}.AIM'.format(t))))
+
+        # Save remodelling images 
+        for im in self.remodelling_images:
+            im.save_aim(im.path)
+
 
         originaldata = [
             item for item in list(self.data.keys()) if ('_seg' not in item) and ('_filt' not in item)]
@@ -775,7 +780,7 @@ class TimelapsedImageSeries:
         self.report += docstring
         self.dataframes += dataframes
         self.datanames += datanames
-        self.data['remodelling'] = remodelling_images
+        self.remodelling_images = remodelling_images
 
     def _syntheticFilling(self, images: list, min_size=3, max_size=23, step=5):
 

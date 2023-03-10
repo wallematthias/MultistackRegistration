@@ -94,7 +94,7 @@ def remodelling(
             remodelling_image.data[resorption>0] = 1
             remodelling_image.data[baseline_seg>0] = 2
             remodelling_image.data[formation>0] = 3
-            remodelling_image.path = remodelling_image.path.replace('.AIM','_REM_B{}_F{}.AIM'.format(baseline,followup))
+            remodelling_image.path = remodelling_image.path.replace('.AIM','REGTO_{}_REM_B{}_F{}.AIM'.format(regto, baseline,followup))
             remodelling_image.timepoint = regto
             remodelling_images.append(remodelling_image)
 
