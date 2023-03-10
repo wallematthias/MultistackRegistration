@@ -89,19 +89,19 @@ def remodelling(
             f_vol = remove_small_objects(binary_f & gray_f, min_size=min_size)
             r_vol = remove_small_objects(binary_r & gray_r, min_size=min_size)
             
-            # Calculate formation and resorption fractions
-            formation = np.sum(f_vol) / fv_bv
-            resorption = np.sum(r_vol) / fv_bv
-            
             remodelling_image = deepcopy(images[baseline])
             remodelling_image.binary=False
-            remodelling_image.data = np.zeros_like(baseline_seg)
+            remodelling_image.data = np.zeros_like(baseline_seg).astype(int)
             remodelling_image.data[baseline_seg>0] = 2
             remodelling_image.data[r_vol>0] = 1
             remodelling_image.data[f_vol>0] = 3
             remodelling_image.path = remodelling_image.path.replace('.AIM','_REGTO_{}_REM_{}_B{}_F{}.AIM'.format(regto,key, baseline,followup))
             remodelling_image.timepoint = regto
             remodelling_images.append(remodelling_image)
+
+          # Calculate formation and resorption fractions
+            formation = np.sum(f_vol) / fv_bv
+            resorption = np.sum(r_vol) / fv_bv
 
             # Save the results to the dataframe
             dfs.append({
