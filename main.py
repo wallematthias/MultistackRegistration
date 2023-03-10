@@ -181,11 +181,11 @@ def main():
 
     if settings['Remodelling threshold'] is not None:
         series.remodelling(
-            keyImage=args.keyImage,
-            keyMask=args.keyMask,
+            key_image=args.keyImage,
+            key_mask=args.keyMask,
             baseline=series.baseline,
             thresholds=args.thresholds,
-            remThr=settings['Remodelling threshold'],
+            rem_thr=settings['Remodelling threshold'],
             min_size=settings['Minimum cluster size'],
             distance=settings['Report depth'],
             regto=series.baseline,

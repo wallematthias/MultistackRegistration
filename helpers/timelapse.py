@@ -773,25 +773,25 @@ class TimelapsedImageSeries:
 
     def remodelling(
             self,
-            keyImage='dens',
-            keyMask=[
+            key_image='dens',
+            key_mask=[
                 'trab',
                 'cort'],
             baseline=0,
             thresholds=[
                 320,
                 450],
-        remThr=225,
+        rem_thr=225,
         min_size=12,
         distance=3,
         regto=0,
             repoducability='DIST'):
 
-        if keyMask == []:
-            keyMask = ['FULL_MASK',]
+        if key_mask == []:
+            key_mask = ['FULL_MASK',]
 
-        docstring, dataframes, datanames = remodelling(self, keyImage=keyImage, keyMask=keyMask, baseline=baseline,
-                                                       thresholds=thresholds, remThr=remThr, min_size=min_size, distance=distance, repoducability=repoducability, regto=regto)
+        docstring, dataframes, datanames = remodelling(self, key_image=key_image, key_mask=key_mask, baseline=baseline,
+                                                       thresholds=thresholds, remThr=rem_thr, min_size=min_size, distance=distance, repoducability=repoducability, regto=regto)
         self.report += docstring
         self.dataframes += dataframes
         self.datanames += datanames
