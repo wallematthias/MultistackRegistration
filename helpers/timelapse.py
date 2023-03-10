@@ -175,7 +175,7 @@ class TimelapsedImage:
         return datetime_obj
 
     def save_aim(self, path: str, arr=None):
-        print('Writing {}'.format(path).ljust(133, '-'))
+        print('Writing {}'.format(path.replace('.AIM','.mha')).ljust(133, '-'))
         if arr is None:
             arr = self.data
 
