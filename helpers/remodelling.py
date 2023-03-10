@@ -92,35 +92,9 @@ def remodelling(
                 }
             )
                 
-                 
-            if 0: #will most likely be removed soon
-                # This section here calcualtes advanced spatial markers
-                grayIntensity = densities[followup] - densities[baseline]
-
-                # Label formation sites
-                label_im, nb_labels = ndimage.label(binaryF)
-
-                # Regionprops table
-                regions = regionprops_table(label_im,intensity_image=grayIntensity,properties=(
-                    'area',"max_intensity",'min_intensity','mean_intensity', 'major_axis_length','minor_axis_length','centroid'))
-                # These are not added to the docstring
-                dataframes.append(pd.DataFrame(regions))
-                datanames.append('TABLE_6_F_CLUSTERS_{}_{}TO{}_REGTO{}'.format(key,followup,baseline,regto))
-
-                # Label resorption sites
-                label_im, nb_labels = ndimage.label(binaryR)
-                # Regionprops table
-                regions = regionprops_table(label_im,intensity_image=grayIntensity,properties=(
-                    'area',"max_intensity",'min_intensity','mean_intensity','major_axis_length','minor_axis_length','centroid'))
-                # These are not added to the docstring
-                dataframes.append(pd.DataFrame(regions))
-                datanames.append('TABLE_7_R_CLUSTERS_{}_{}TO{}_REGTO{}'.format(key, followup,baseline,regto))
-        
-        
         #format the remodelling string for the docstring
         dfRem = pd.DataFrame(dfs)
 
-        
         # append this table for saving
         dataframes.append(dfRem)
         datanames.append(
