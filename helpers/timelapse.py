@@ -312,7 +312,8 @@ class TimelapsedImageSeries:
                 self.data[key].append(tmp)
                 self.timepoints[key].append(tmp.timepoint)
                 # self.shapes.append(tmp.data.shape)
-            
+
+        # adds an all 1 mask if no mask is provided    
         if len(self.data.keys())==1:
             self.data['FULL_MASK'] = deepcopy(self.data[next(iter(self.data))])
             for i, im in enumerate(self.data['FULL_MASK']):
