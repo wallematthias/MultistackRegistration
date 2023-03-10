@@ -2,9 +2,8 @@ from copy import deepcopy
 from itertools import combinations
 import numpy as np
 import pandas as pd
-from skimage.measure import regionprops
-from scipy import stats
-from scipy import ndimage
+from skimage.morphology import remove_small_objects
+from scipy.ndimage import binary_erosion
 from helpers.reporting import dftotxt
 from helpers.segment_hrpqct import segment_hrpqct
 
