@@ -1,6 +1,7 @@
 import itk
 import numpy as np
 from pint import Quantity
+import re
 
 class AIMFile:
     '''
@@ -33,12 +34,13 @@ def load_aim(filepath):
   
     image = itk.imread(filepath)
     arr = np.transpose(np.asarray(image), (1, 2, 0))
-    processing_log= dict(image)
 
-    density = processing_log['RescaleSlope'] * arr + processing_log['RescaleIntercept']
-
+    mu_scaling, hu_mu_water, hu_mu_air, density_slope, density_intercept = get_aim_calibration_constants_from_processing_log(filepath)
+    density = convert_hounsfield_to_mgccm(arr,
+        mu_scaling, hu_mu_water, hu_mu_air, density_slope, density_intercept)
     data= Quantity(density,'mg/cm**3')
 
+    processing_log= dict(image)
     voxelsize= Quantity(processing_log['spacing'],'mm')
     position= np.round(processing_log['origin']/processing_log['spacing']).astype(int)
 
@@ -63,6 +65,56 @@ def write_aim(aim_file, file_path):
     itk.imwrite(image, file_path.replace('.AIM','.mha'))
   
     return 1
+
+
+def get_aim_calibration_constants_from_processing_log(filename):
+    '''Get the calibration constants from a AIM processing log'''
+
+    with open(filename, 'rb') as file:
+        processing_log = str(file.read(3072))
+
+    mu_scaling_match = re.search(r'Mu_Scaling\s+(\d+)', processing_log)
+    hu_mu_water_match = re.search(r'HU: mu water\s+(\d+.\d+)', processing_log)
+    density_slope_match = re.search(r'Density: slope\s+([-+]?(\d+(\.\d*)?|\.\d+)([eE][-+]?\d+)?)', processing_log)
+    density_intercept_match = re.search(r'Density: intercept\s+([-+]?(\d+(\.\d*)?|\.\d+)([eE][-+]?\d+)?)', processing_log)
+
+    mu_scaling = int(mu_scaling_match.group(1))
+    hu_mu_water = float(hu_mu_water_match.group(1))
+    hu_mu_air = 0
+    density_slope = float(density_slope_match.group(1))
+    density_intercept = float(density_intercept_match.group(1))
+
+    return mu_scaling, hu_mu_water, hu_mu_air, density_slope, density_intercept
+
+
+def convert_hounsfield_to_mgccm(hounsfield, mu_scaling, hu_mu_water, hu_mu_air, density_slope, density_intercept):
+    """
+    Converts a value in Hounsfield units to milligrams per cubic centimeter (mg/cc).
+
+    Args:
+        hounsfield (float): The value to be converted, in Hounsfield units (HU).
+        mu_scaling (float): The scaling factor used to convert from native units to linear attenuation coefficients (LAC).
+        hu_mu_water (float): The HU value of water, used to calculate the slope for the conversion from HU to LAC.
+        hu_mu_air (float): The HU value of air, used to calculate the slope for the conversion from HU to LAC.
+        density_slope (float): The slope of the linear equation used to convert from LAC to density in mg/cc.
+        density_intercept (float): The intercept of the linear equation used to convert from LAC to density in mg/cc.
+
+    Returns:
+        float: The value converted to mg/cc.
+    """
+    
+    # do some conversions
+    
+    slope_native_to_hounsfield = 1000.0 / (mu_scaling * (hu_mu_water - hu_mu_air))
+    intercept_native_to_hounsfield = -1000.0 * hu_mu_water / (hu_mu_water - hu_mu_air)
+    slope_native_to_density = density_slope / mu_scaling
+    intercept_native_to_density = density_intercept
+    slope_hounsfield_to_density = slope_native_to_density / slope_native_to_hounsfield
+    intercept_hounsfield_to_density = intercept_native_to_density - slope_native_to_density * intercept_native_to_hounsfield / slope_native_to_hounsfield
+    
+    density = slope_hounsfield_to_density * hounsfield + intercept_hounsfield_to_density
+    
+    return density
 
 
 def pad_to_common_coordinate_system(aim_files, padding_values=None):
