@@ -41,6 +41,9 @@ def load_aim(filepath):
     data= Quantity(density,'mg/cm**3')
 
     processing_log= dict(image)
+    processing_log['density_slope'] = density_slope
+    processing_log['density_intercept'] = density_intercept
+ 
     voxelsize= Quantity(processing_log['spacing'],'mm')
     position= np.round(processing_log['origin']/processing_log['spacing']).astype(int)
 
