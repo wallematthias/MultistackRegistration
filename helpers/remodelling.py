@@ -47,13 +47,13 @@ def remodelling(
     docstring = ''
     dataframes = []
     datanames = []
+    remodelling_images = []
 
     # Create a common region as the intersection of image domains
     # (this erosion is necessary for slanted surfaces)
     images = series.get(key_image, to=regto)
     common_region = np.all([np.any(im.domain, axis=0) for im in images], axis=0)
     common_region = binary_erosion(common_region)
-
     for thr, key in zip(thresholds, key_mask):
         masks = series.get(key, to=regto)
 
@@ -75,7 +75,7 @@ def remodelling(
 
         # Initiate the remodelling matrices based on the number of timepoints
         dfs = []
-        remodelling_images = []
+        
         for baseline, followup in combinations(range(series.nTimepoints), 2):
             baseline_seg = seg_data[baseline] > 0.5
             followup_seg = seg_data[followup] > 0.5
