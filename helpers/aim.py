@@ -65,12 +65,13 @@ def load_aim(filepath: str) -> AIMFile:
         processing_log['density_intercept'] = density_intercept
 
     except:
+
         # If the file cannot be read as an image file, assume it is a binary mask file
         print('Reading mask Data')
         image = itk.imread(filepath, itk.UC)
         
         # Convert the mask data to a Quantity object with units of 'dimensionless'
-        data= Quantity(np.transpose(np.asarray(image) > 0, (1, 2, 0)).astype(int),'dimensionless')
+        data= Quantity(np.transpose(np.asarray(image) > 0, (1, 2, 0)).astype(float),'dimensionless')
         
         # Create a dictionary containing the processing log
         processing_log = dict(image)
