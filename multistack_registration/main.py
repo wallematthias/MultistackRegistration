@@ -9,7 +9,7 @@ from pathlib import Path
 from multistack_registration.helpers.registration import Registration
 from multistack_registration.helpers.remodelling import remodelling
 from multistack_registration.helpers.transformation import Transformation
-from multistack_registration.helpers.timelapse import TimelapsedImage, TimelapsedImageSeries
+from multistack_registration.helpers.timelapse import TimelapsedImage, TimelapsedImageSeries, generate_settings
 
 def main():
     '''
