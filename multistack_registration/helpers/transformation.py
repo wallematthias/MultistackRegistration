@@ -6,7 +6,7 @@ import networkx as nx
 import SimpleITK as sitk
 from copy import deepcopy
 from skimage.filters import gaussian
-from helpers.registration import Registration, strToSitkInterpolator
+from multistack_registration.helpers.registration import Registration, strToSitkInterpolator
 
 
 class Transformation:
