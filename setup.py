@@ -8,7 +8,7 @@ with open('requirements.txt', 'r') as f:
 
 setup(
     name='multistack_registration',
-    version='1.0.3',
+    version='1.0.4',
     author='Matthias Walle',
     author_email='matthias.walle@hest.ethz.ch',
     description='Multistack registration for HR-pQCT',
