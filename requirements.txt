@@ -1,4 +1,3 @@
-itk-ioscanco
 xarray
 zarr
 tqdm
@@ -6,6 +5,8 @@ pooch
 pint
 PyYAML
 SimpleITK
+itk
+itk-ioscanco
 pandas
 scikit-image
 matplotlib
