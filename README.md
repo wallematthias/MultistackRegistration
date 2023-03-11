@@ -33,32 +33,32 @@ pip install git+https://github.com/wallematthias/multistack_registration
 
 4. Once the installation is complete, you will be able to use `multistack_registration` as command line funciton. With the following command line arguments.
 
---input <str>
-    Specifies the path to the input files. If not provided, the current folder is used as the default.
+    --input <str>
+        Specifies the path to the input files. If not provided, the current folder is used as the default.
 
---keyImage <str>
-    Specifies the filename pattern for the image files to be registered. Both images need to have the same filename, except for the last letter which should indicate the timepoint (e.g., `NameA_T1.AIM`, `NameA_T2.AIM`, `NameA_T3.AIM`). To register all three files, the input pattern should be `NameA_T?`.
+    --keyImage <str>
+        Specifies the filename pattern for the image files to be registered. Both images need to have the same filename, except for the last letter which should indicate the timepoint (e.g., `NameA_T1.AIM`, `NameA_T2.AIM`, `NameA_T3.AIM`). To register all three files, the input pattern should be `NameA_T?`.
 
---keyMask <str> ...
-    Specifies the mask identifier to be used (e.g., `TRAB_MASK`, `CORT_MASK`). The mask filenames need to follow a specific pattern (`NameA_T1_TRAB_MASK.AIM`, `NameA_T1_CORT_MASK.AIM`, etc.) and be in the same folder as the key images.
+    --keyMask <str> ...
+        Specifies the mask identifier to be used (e.g., `TRAB_MASK`, `CORT_MASK`). The mask filenames need to follow a specific pattern (`NameA_T1_TRAB_MASK.AIM`, `NameA_T1_CORT_MASK.AIM`, etc.) and be in the same folder as the key images.
 
---transform <str>
-    Specifies a custom path for the transformations to be saved.
+    --transform <str>
+        Specifies a custom path for the transformations to be saved.
 
---output <str>
-    Specifies the output path. If not provided, the default value is `'.'`.
+    --output <str>
+        Specifies the output path. If not provided, the default value is `'.'`.
 
---stackHeight <int>
-    Specifies the height of the stack. If not provided, the default value is `168`.
+    --stackHeight <int>
+        Specifies the height of the stack. If not provided, the default value is `168`.
 
---thresholds <int> ...
-    Specifies the segmentation thresholds within the masks that were provided. If not provided, the default value is `None`.
+    --thresholds <int> ...
+        Specifies the segmentation thresholds within the masks that were provided. If not provided, the default value is `None`.
 
---options <str>
-    Specifies the path to additional options. If not provided, the default value is `None`.
+    --options <str>
+        Specifies the path to additional options. If not provided, the default value is `None`.
 
-For example:
-`multistack_registration --input '/path/to/input/files' --keyImage 'NameA_T?' --keyMask 'TRAB_MASK' 'CORT_MASK' --thresholds 320 450 --output '/path/to/output/files'`
+    For example:
+        `multistack_registration --input '/path/to/input/files' --keyImage 'NameA_T?' --keyMask 'TRAB_MASK' 'CORT_MASK' --thresholds 320 450 --output '/path/to/output/files'`
 
 
 5. If you need to upgrade or uninstall the package at a later time, you can use the following commands:
