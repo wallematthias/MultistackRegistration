@@ -6,13 +6,10 @@ from argparse import ArgumentParser
 from glob import glob
 from pathlib import Path
 
-import sys
-sys.path.append("helpers")
-
-from helpers.registration import Registration
-from helpers.remodelling import remodelling
-from helpers.transformation import Transformation
-from helpers.timelapse import TimelapsedImage, TimelapsedImageSeries
+from multistack_registration.helpers.registration import Registration
+from multistack_registration.helpers.remodelling import remodelling
+from multistack_registration.helpers.transformation import Transformation
+from multistack_registration.helpers.timelapse import TimelapsedImage, TimelapsedImageSeries
 
 def main():
     '''

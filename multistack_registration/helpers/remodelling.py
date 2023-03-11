@@ -4,8 +4,8 @@ import numpy as np
 import pandas as pd
 from skimage.morphology import remove_small_objects
 from scipy.ndimage import binary_erosion
-from helpers.reporting import dftotxt
-from helpers.segment_hrpqct import segment_hrpqct
+from multistack_registration.helpers.reporting import dftotxt
+from multistack_registration.helpers.segment_hrpqct import segment_hrpqct
 
 
 def remodelling(
