@@ -24,7 +24,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'multistack_registration=multistack_registration.main:main_function',
+            'multistack_registration=multistack_registration.main:main',
         ],
     },
 )
