@@ -50,7 +50,7 @@ def load_aim(filepath: str) -> AIMFile:
         image = itk.imread(filepath)
 
         # Convert the image to a NumPy array and transpose it to change the axis order
-        arr = np.transpose(np.asarray(image), (2, 1, 0))
+        arr = np.transpose(np.asarray(image), (1, 2, 0))
 
         # Get the calibration constants from the processing log and use them to convert the Hounsfield units to density values
         mu_scaling, hu_mu_water, hu_mu_air, density_slope, density_intercept = get_aim_calibration_constants_from_processing_log(filepath)
@@ -71,7 +71,7 @@ def load_aim(filepath: str) -> AIMFile:
         image = itk.imread(filepath, itk.UC)
         
         # Convert the mask data to a Quantity object with units of 'dimensionless'
-        data= Quantity(np.transpose(np.asarray(image) > 0, (2, 1, 0)).astype(float),'dimensionless')
+        data= Quantity(np.transpose(np.asarray(image) > 0, (1, 2, 0)).astype(float),'dimensionless')
         
         # Create a dictionary containing the processing log
         processing_log = dict(image)
