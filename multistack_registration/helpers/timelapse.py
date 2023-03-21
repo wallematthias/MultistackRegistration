@@ -15,8 +15,8 @@ from skimage.morphology import remove_small_objects
 
 from pint import Quantity
 
-from multistack_registration.helpers import aim
-from multistack_registration.helpers.resize_reposition_image import crop_pad_image
+from aim import aim
+from aim.resize_reposition_image import crop_pad_image
 from multistack_registration.helpers.registration import Registration
 from multistack_registration.helpers.remodelling import remodelling
 from multistack_registration.helpers.transformation import Transformation

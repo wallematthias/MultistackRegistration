@@ -5,7 +5,7 @@ from scipy import ndimage as ndi
 from skimage._shared.utils import check_nD
 from skimage.filters import gaussian
 from skimage.morphology import remove_small_objects
-from multistack_registration.helpers.resize_reposition_image import crop_pad_aims, crop_pad_image
+from aim.resize_reposition_image import crop_pad_aims, crop_pad_image
 from pint import Quantity
 
 def threshold_local_3d(image, block_size, method='gaussian',
