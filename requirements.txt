@@ -2,13 +2,11 @@ xarray
 zarr
 tqdm
 pooch
-pint
 PyYAML
 SimpleITK
-itk
-itk-ioscanco
 pandas
 scikit-image
 matplotlib
 tabulate
 itkwidgets[all]>=1.0a21
+git+https://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@github.com/OpenMSKImaging/aim.git

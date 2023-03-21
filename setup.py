@@ -8,13 +8,13 @@ with open('requirements.txt', 'r') as f:
 
 setup(
     name='multistack_registration',
-    version='1.0.6',
+    version='1.0.7',
     author='Matthias Walle',
     author_email='matthias.walle@hest.ethz.ch',
     description='Multistack registration for HR-pQCT',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    url='https://github.com/wallematthias/multistack_registration',
+    url='https://github.com/OpenMSKImaging/multistack_registration',
     packages=find_packages(),
     install_requires=requirements,
     classifiers=[
