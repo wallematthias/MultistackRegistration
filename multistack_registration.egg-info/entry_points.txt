@@ -1,0 +1,2 @@
+[console_scripts]
+multistack_registration = multistack_registration.main:main

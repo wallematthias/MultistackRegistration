@@ -1,3 +1,28 @@
+Metadata-Version: 2.1
+Name: multistack_registration
+Version: 1.0.7
+Summary: Multistack registration for HR-pQCT
+Home-page: https://github.com/OpenMSKImaging/multistack_registration
+Author: Matthias Walle
+Author-email: matthias.walle@hest.ethz.ch
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: xarray
+Requires-Dist: zarr
+Requires-Dist: tqdm
+Requires-Dist: pooch
+Requires-Dist: PyYAML
+Requires-Dist: SimpleITK
+Requires-Dist: pandas
+Requires-Dist: scikit-image
+Requires-Dist: matplotlib
+Requires-Dist: tabulate
+Requires-Dist: itkwidgets[all]>=1.0a21
+Requires-Dist: aim@ git+https://github.com/wallematthias/ScancoAIMreader.git
+
 # README for Stack Shift Artefact Correction Algorithm
 
 This repository contains a reimplementation of a method for correcting stack shift artefacts in medical imaging, developed by Matthias Walle based on the paper: 
@@ -5,15 +30,6 @@ This repository contains a reimplementation of a method for correcting stack shi
 Whittier, D.E., Walle, M., Schenk, D., Atkins, P.R., Collins, C.J., Zysset, P., Lippuner, K. and Müller, R., 2023. A multi-stack registration technique to improve measurement accuracy and precision across longitudinal HR-pQCT scans. Bone, 176, p.116893.
 
 This document provides an overview of the method and instructions on how to use the code.
-
-## Installation
-```
-git clone https://github.com/wallematthias/MultistackRegistration.git
-cd MultistackRegistration
-conda env create -f environment.yml --name multistack
-conda activate multistack
-pip install -e .
-```
 
 ## Method Steps
 The method consists of the following steps:
